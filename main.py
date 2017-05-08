@@ -11,6 +11,8 @@ read_json_file = functs.read_json_file
 lang_handling = functs.lang_handling
 encoding_string = functs.encoding_string
 
+PATH = 'tmp'
+
 
 def select_host( lang ):
     '''Listázza a választható kiszolgálókat'''
@@ -52,16 +54,14 @@ def main():
         bitrate = select_bitrate( lang )
         log.debug( encoding_string( lang["selected_bitrate"].format( bitrate=bitrate ) ) )
 
-        path = 'tmp'
-
         host = select_host( lang )
         log.debug( encoding_string( lang["selected_host"].format( host=host['host'] ) ) )
 
         if "tv2.hu" in host['host']:
-            obj = classes.TV2( host, lang, { 'bitrate': int( bitrate ), 'path': path } )
+            obj = classes.TV2( host, lang, { 'bitrate': int( bitrate ), 'path': PATH } )
 
         obj.download_videos()
-        print( obj )
+        #print( obj )
     except:
         log.error( encoding_string( lang["errors"]["une"] ) )
         log.debug( sys.exc_info() )
