@@ -1,0 +1,30 @@
+{
+	"identification": "Azonosító",
+	"host": "Kiszolgáló",
+	"load": "Adatok betöltése",
+	"ready": "Kész",
+	"series": "Sorozat",
+	"series_search": "Sorozat keresés",
+	"selected_series": "Válaszott sorozat: '{series}'",
+	"selected_series_id": "Válaszott sorozat azonosító: '{id}'",
+	"selected_host": "Választott kiszolgáló: '{host}'",
+	"selected_episodes": "Választott epizódok: '{episodes}'",
+	"selected_bitrate":  "Választott felbotnás: '{bitrate}'",
+	"download_episodes": "Kérem a letöltendö epizódokat",
+	"episode": "epizód",
+	"bitrate": "Felbontás",
+	"done": "Kész",
+	"errors": {
+		"con": "Nincs internetkapcsolat vagy a '{link}' nem érhetö el",
+		"url": "Helytelen URL: '{link}'",
+		"ide": "Érvénytelen azonosító : '{id}'",
+		"min": "Legalább három karaktert kell megadni",
+		"non": "A megadott kulcsszóra nincs találat: '{key}'",
+		"num": "Csak számokat adjon meg: '{value}' nem szám",
+		"int": "Intervallumnak két paramétert kell megadni",
+		"not": "A megadott rész nem található",
+		"une": "Váratlan hiba történt",
+		"sma": "Túl kicsi számot adott meg: '{num}'",
+		"dow": "A letöltés nem sikerült"
+	}
+}
