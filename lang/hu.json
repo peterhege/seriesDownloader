@@ -32,7 +32,8 @@
 		"une": "Váratlan hiba történt",
 		"sma": "Túl kicsi számot adott meg: '{num}'",
 		"dow": "A letöltés nem sikerült",
-		"bie": "Érvénytelen felbontást adott meg: '{bitrate}'"
+		"bie": "Érvénytelen felbontást adott meg: '{bitrate}'",
+		"poz": "Csak pozitív számokat adjon meg"
 	},
 	"options": [
 		"Teljes keresés indítása",

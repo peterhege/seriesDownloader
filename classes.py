@@ -67,6 +67,10 @@ class seriesDownloader:
             episodes = input( '\n{down} ( 1-10 | 1,5,30 | 11 ): '.format( down=lang_handling( "download_episodes", self.lang ) ) )
             episodes = episodes.replace(' ','')
 
+            if ',' in episodes and '-' in episodes:
+                log.warning( error_handling( "poz", self.lang ) )
+                continue
+
             if ',' in episodes:
                 episodes = episodes.strip(',')
                 episodes = episodes.split(',')
@@ -273,6 +277,7 @@ class TV2( seriesDownloader ):
 
         for ep in self.settings['episodes']:
             log.info( '\n[{progress:3.0f}%] {ep}. {episode}'.format( progress=(100 * process / total), ep=ep, episode=lang_handling( 'episode', self.lang ) ) )
+            process += 1
             ep_links = self.get_episode_links( ep )
             if not ep_links:
                 log.warning( error_handling( "not", self.lang ) )
@@ -297,9 +302,8 @@ class TV2( seriesDownloader ):
                     except:
                         log.error( error_handling( "dow", self.lang ) )
 
-            process += 1
-
-        log.info( "\n[100%] {done}".format( done=lang_handling( "download_done", self.lang ) ) )
+        print("")
+        log.info( "[100%] {done}".format( done=lang_handling( "download_done", self.lang ) ) )
 
 
     def __str__( self ):
