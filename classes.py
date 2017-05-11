@@ -5,8 +5,11 @@ from lxml import html
 import mylogging as log
 import functs
 
+
+# Create shortcut functions
 encoding_string = functs.encoding_string
 lang_handling = functs.lang_handling
+error_handling = functs.error_handling
 replace_accent = functs.replace_accent
 download = functs.download
 
@@ -21,15 +24,15 @@ class TV2:
         self.lang = lang
 
 
-    def data_mining( self, link, xpath_desc ):
-        '''Adatok halászása az adott hivatkozásról'''
+    def get_data( self, link, xpath_desc ):
+        '''Finding data from the link with xpath_desc'''
         try:
             page = requests.get( link )
         except requests.exceptions.InvalidURL:
-            log.error( encoding_string( self.lang["errors"]["url"].format( link=link ) ) )
+            log.error( error_handling( "url", self.lang, { "link": link } ) )
             return False
         except requests.exceptions.ConnectionError:
-            log.error( encoding_string( self.lang["errors"]["con"].format( link=link ) ) )
+            log.error( error_handling( "con", self.lang, { "link": link } ) )
             return False
 
         tree = html.fromstring( page.content )
@@ -37,14 +40,14 @@ class TV2:
 
 
     def get_series(self):
-        '''Visszaadja a host összes sorozatát egy rendezett listában'''
+        '''Returns all series of the host in a sorted list'''
         series_l = []
         host = self.host_settings['host']
         xpath_desc = self.host_settings['series_xpath']
 
         print( '\n{load}...'.format( load=lang_handling( "load", self.lang ) ), end='' )
 
-        series = self.data_mining( '{host}/search.php'.format( host=host ), xpath_desc )
+        series = self.get_data( '{host}/search.php'.format( host=host ), xpath_desc )
         if not series:
             return False
 
@@ -52,7 +55,7 @@ class TV2:
             key = value.xpath('text()')[0].lower().strip()
             val = value.xpath('@value')[0]
 
-            if val != '0': #0 - Műsor (alapértelmezett menüpont)
+            if val != '0': #0 - Műsor (default menu item)
                 series_l.append( ( key, val ) )
 
         print( '{ready}'.format( ready=lang_handling( "ready", self.lang ) ) )
@@ -61,14 +64,15 @@ class TV2:
 
 
     def search_series( self, series ):
-        '''Megkeresi a listában a megadott kulcsszót'''
+        '''Finds the specified keyword in the series'''
         hit_series = []
 
         while True:
             keyword = input( '\n{search}: '.format( search=lang_handling( "series_search", self.lang ) ) )
 
             if len( keyword ) < 3:
-                log.warning( encoding_string( self.lang["errors"]["min"] ) )
+                log.warning( error_handling( "min", self.lang ) )
+                #log.warning( encoding_string( self.lang["errors"]["min"] ) )
                 continue
             else:
                 break
@@ -85,7 +89,7 @@ class TV2:
 
 
     def print_series( self, series ):
-        '''Kiírja a letölthető sorozatokat és visszatér a kiválasztott azonosítójával'''
+        '''Prints the optional series and saves to the selected one.'''
         while True:
 
             print( '\n{id:^15}{name}'.format( id=lang_handling( "identification", self.lang ), name=lang_handling( "series", self.lang ) ) )
@@ -109,7 +113,7 @@ class TV2:
 
 
     def valid_episodes( self, episodes ):
-        '''Megvizsgálja az átadott listát'''
+        '''Examine the list being delivered.'''
         for value in episodes:
             if not value.isdigit():
                 log.warning( encoding_string( self.lang["errors"]["num"].format( value=value ) ) )
@@ -118,7 +122,7 @@ class TV2:
 
 
     def get_episodes(self):
-        '''A bemenetnek megfelelően előállítja a letöltendő elemek listáját (vagy range)'''
+        '''It generates a list (or range) of items to download according to the input'''
         while True:
             episodes = input( '\n{down}: '.format( down=lang_handling( "download_episodes", self.lang ) ) )
             episodes = episodes.replace(' ','')
@@ -160,12 +164,12 @@ class TV2:
 
 
     def get_episode_links( self, ep ):
-        '''Visszaadja egy epizódhoz tartozó szeletek listáját'''
+        '''Saves a list of slices of an episode'''
         xpath_desc = self.host_settings['episodes_xpath']
         host = self.host_settings['host']
         link = '{host}/search/{episode}/oldal1?&datumtol={date_start}&datumig={date_end}&musorid={show_id}'.format( host=host, episode=ep, date_start=self.host_settings['date_start'], date_end=self.host_settings['date_end'], show_id=self.settings['show_id'] )
 
-        pager = self.data_mining( link, self.host_settings['pager_xpath'] )
+        pager = self.get_data( link, self.host_settings['pager_xpath'] )
         if pager == False:
             return False
 
@@ -175,11 +179,11 @@ class TV2:
             else:
                 link = host + pager[-2].xpath( '@href' )[0]
 
-            videos = self.data_mining( link, xpath_desc )
+            videos = self.get_data( link, xpath_desc )
             if not videos:
                 return False
         else:
-            videos = self.data_mining( link, xpath_desc )
+            videos = self.get_data( link, xpath_desc )
 
         valid_episodes = [
             ' {episode}. '.format( episode=ep ),
@@ -200,10 +204,10 @@ class TV2:
 
 
     def get_json_url( self, link ):
-        '''Visszaadja a json fájl elérési útját'''
+        '''Returns the json file path'''
         xpath_desc = self.host_settings['script_xpath']
 
-        scripts = self.data_mining( link, xpath_desc )
+        scripts = self.get_data( link, xpath_desc )
         if not scripts:
             return False
 
@@ -223,10 +227,10 @@ class TV2:
 
 
     def get_json_dict( self, link ):
-        '''Visszaad a json fájlból egy adatszótárat'''
+        '''Returns a dictionary from the json file'''
         link = "http://{link}".format( link=link.lstrip("//") )
 
-        jsonText = self.data_mining( link, '//text()' )
+        jsonText = self.get_data( link, '//text()' )
         if not jsonText:
             return False
         else:
@@ -236,7 +240,7 @@ class TV2:
 
 
     def select_bitrate( self, dictionary ):
-        '''A megadott felbontás vagy a megadotthoz legközelebbi kiválasztása'''
+        '''Specify the specified resolution or the nearest to the specified one'''
         bitrates = dictionary['mp4Labels']
         del bitrates[0]
 
@@ -250,7 +254,7 @@ class TV2:
         return videoLinks[i]
 
     def download_videos( self ):
-        '''Letöltés vezérlő'''
+        '''Download controller'''
         series = self.get_series()
         if not series:
             return False
@@ -287,7 +291,7 @@ class TV2:
                         download( link, ep_name, self.settings['path'] )
                         log.debug( lang_handling( 'done', self.lang ) )
                     except:
-                        log.error( encoding_string( lang['errors']['dow'] ) )
+                        log.error( encoding_string( self.lang['errors']['dow'] ) )
 
 
     def __str__( self ):

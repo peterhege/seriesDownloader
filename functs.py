@@ -4,7 +4,7 @@ import sys
 import requests
 
 def read_json_file( link ):
-    '''Beolvas egy json fájlt'''
+    '''Read a json file'''
     try:
         with open( link ) as f:
             return json.load( f )
@@ -14,7 +14,7 @@ def read_json_file( link ):
 
 
 def encoding_string( s ):
-    '''Ékezetes karaterek kódólása'''
+    '''Coding accurate characters'''
     text = s
     d = {
         "Ã¡": "á",
@@ -36,13 +36,22 @@ def encoding_string( s ):
     return text
 
 
-def lang_handling( code, lang ):
-    '''Nyelvi szövegek visszaadása'''
+def lang_handling( code, lang, lang_dict=False ):
+    '''Returning the language texts'''
+    if lang_dict:
+        return encoding_string( lang[ code ].format( **lang_dict ) )
     return encoding_string( lang[ code ] )
 
 
+def error_handling( code, lang, lang_dict=False ):
+    '''Returning the error texts'''
+    if lang_dict:
+        return encoding_string( lang['errors'][ code ].format( **lang_dict ) )
+    return encoding_string( lang['errors'][ code ] )
+
+
 def replace_accent(s):
-    '''Lecseréli az ékezetes karaktereket egy stringben'''
+    '''Change the accented characters in a string'''
     d = {
         'á':'a',
         'é':'e',
@@ -66,6 +75,7 @@ def replace_accent(s):
 
 
 def download( link, name, path ):
+    '''Download an mp4 file with progress'''
     down_name = replace_accent( name.replace(" ","_").replace('.','').replace('/','_').replace('-','_').lower() )
     file_name = "{path}/{file_name}.mp4".format( path=path, file_name=down_name )
     progress_length = 50

@@ -7,15 +7,21 @@ import sys
 import mylogging as log
 
 
+# Create shortcut functions
 read_json_file = functs.read_json_file
 lang_handling = functs.lang_handling
+error_handling = functs.error_handling
 encoding_string = functs.encoding_string
 
-PATH = 'tmp'
+# Default paths
+DOWNLOAD_PATH = 'tmp'
+LANG_PATH = 'lang/hu.json'
 
 
 def select_host( lang ):
-    '''Listázza a választható kiszolgálókat'''
+    '''Lists the optional hosts.
+
+    Returns to the selected host data from the hosts.json file.'''
     hosts = read_json_file( 'hosts.json' )
 
     while True:
@@ -35,6 +41,7 @@ def select_host( lang ):
 
 
 def select_bitrate( lang ):
+    '''Specify the desired bitrate'''
     while True:
         bitrate = input( '\n{bitrate}: '.format( bitrate=lang_handling( "bitrate", lang ) ) )
 
@@ -48,22 +55,24 @@ def select_bitrate( lang ):
 
 def main():
     log.debug( "Start" )
-    lang = read_json_file( 'lang/hu.json' )
+
+    lang = read_json_file( LANG_PATH )
 
     try:
         bitrate = select_bitrate( lang )
-        log.debug( encoding_string( lang["selected_bitrate"].format( bitrate=bitrate ) ) )
+        log.debug( lang_handling( "selected_bitrate", lang, { "bitrate": bitrate } ) )
 
         host = select_host( lang )
-        log.debug( encoding_string( lang["selected_host"].format( host=host['host'] ) ) )
+        log.debug( lang_handling( "selected_host", lang, { "host": host['host'] } ) )
 
+        # select class
         if "tv2.hu" in host['host']:
-            obj = classes.TV2( host, lang, { 'bitrate': int( bitrate ), 'path': PATH } )
+            obj = classes.TV2( host, lang, { 'bitrate': int( bitrate ), 'path': DOWNLOAD_PATH } )
 
+        # download controller
         obj.download_videos()
-        #print( obj )
     except:
-        log.error( encoding_string( lang["errors"]["une"] ) )
+        log.error( error_handling( "une", lang ) )
         log.debug( sys.exc_info() )
         raise
 
