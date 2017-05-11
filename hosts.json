@@ -1,5 +1,5 @@
-{
-    "tv2": {
+[
+    {
         "host": "http://tv2.hu",
         "series_xpath": "//div[@id=\"kereses_fejlec\"]/select/option",
         "episodes_xpath": "//div[contains(@class, 'listaelem_kereses')]/a",
@@ -7,7 +7,7 @@
         "script_xpath": "//script/text()",
         "date_start": "1997-10-04"
     },
-    "supertv2": {
+    {
         "host": "http://supertv2.hu",
         "series_xpath": "//form[@action='/search.php']/p/select/option",
         "episodes_xpath": "//div[contains(@class, 'listaelem_kicsi')]/div[contains(@class, 'cim')]/a",
@@ -15,4 +15,4 @@
         "script_xpath": "//script/text()",
         "date_start": "1997-10-04"
     }
-}
+]

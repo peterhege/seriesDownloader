@@ -26,17 +26,17 @@ def select_host( lang ):
     while True:
         print( '\n{id:^15}{name}'.format( id=lang_handling( "identification", lang ), name=lang_handling( "host", lang ) ) )
         print( '-' * 40 )
-        for host in hosts.keys():
+        for host in range( len( hosts ) ):
             print( '{id:^15}{name}'.format( id=host, name=hosts[host]['host'] ) )
             
         host_id = input( '\n{ident}: '.format( ident=lang_handling( "identification", lang ) ) )
 
-        if host_id not in hosts:
-            log.warning( error_handling( "ide", self.lang, { "id": host_id } ) )
+        if not host_id.isdigit() or int( host_id ) >= len( hosts ) or int( host_id ) < 0:
+            log.warning( error_handling( "ide", lang, { "id": host_id } ) )
         else:
             break
 
-    return hosts[ host_id ]
+    return hosts[ int( host_id ) ]
 
 
 def select_bitrate( lang ):
