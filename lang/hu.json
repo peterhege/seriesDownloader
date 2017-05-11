@@ -4,7 +4,10 @@
 	"load": "Adatok betöltése",
 	"ready": "Kész",
 	"series": "Sorozat",
-	"series_search": "Sorozat keresés",
+	"series_search": "Sorozat keresés (kulcsszó)",
+	"select_bitrate": "Kérem, adjon meg egy kívánt felbontást a listáról",
+	"select_host": "Kérem, adja meg a kívánt kiszolgáló azonosítóját",
+	"select_series": "Kérem, adjon meg egy azonosítót a találati listáról",
 	"selected_series": "Válaszott sorozat: '{series}'",
 	"selected_series_id": "Válaszott sorozat azonosító: '{id}'",
 	"selected_host": "Választott kiszolgáló: '{host}'",
@@ -25,6 +28,7 @@
 		"not": "A megadott rész nem található",
 		"une": "Váratlan hiba történt",
 		"sma": "Túl kicsi számot adott meg: '{num}'",
-		"dow": "A letöltés nem sikerült"
+		"dow": "A letöltés nem sikerült",
+		"bie": "Érvénytelen felbontást adott meg: '{bitrate}'"
 	}
 }

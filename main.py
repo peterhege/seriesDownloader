@@ -29,7 +29,7 @@ def select_host( lang ):
         for host in range( len( hosts ) ):
             print( '{id:^15}{name}'.format( id=host, name=hosts[host]['host'] ) )
             
-        host_id = input( '\n{ident}: '.format( ident=lang_handling( "identification", lang ) ) )
+        host_id = input( '\n{ident}: '.format( ident=lang_handling( "select_host", lang ) ) )
 
         if not host_id.isdigit() or int( host_id ) >= len( hosts ) or int( host_id ) < 0:
             log.warning( error_handling( "ide", lang, { "id": host_id } ) )
@@ -48,16 +48,22 @@ def select_bitrate( lang ):
         480,
         360,
         240,
+        180,
         144
     ]
 
     while True:
-        bitrate = input( '\n{bitrate}: '.format( bitrate=lang_handling( "bitrate", lang ) ) )
+        print( '\n{id:^15}'.format( id=lang_handling( "bitrate", lang ) ) )
+        print( '-' * 40 )
+
+        for rate in bitrates:
+            print( '{id:^15}'.format( id=rate ) )
+        bitrate = input( '\n{bitrate}: '.format( bitrate=lang_handling( "select_bitrate", lang ) ) )
 
         if not bitrate.isdigit():
-            log.warning( "num", self.lang, { "value": bitrate } )
-        elif int( bitrate ) < 360:
-            log.warning( "sma", self.lang, { "num": bitrate } )
+            log.warning( error_handling( "num", lang, { "value": bitrate } ) )
+        elif int( bitrate ) not in bitrates:
+            log.warning( error_handling( "bie", lang, { "bitrate": bitrate } ) )
         else:
             return bitrate
 

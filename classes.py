@@ -38,7 +38,7 @@ class seriesDownloader:
             for i in range( len( series ) ):
                 print( '{id:^15}{name}'.format( id=i, name=series[i][0].capitalize() ) )
             
-            series_id = input('\n{ident}: '.format( ident=lang_handling( "identification", self.lang ) ) )
+            series_id = input('\n{ident}: '.format( ident=lang_handling( "select_series", self.lang ) ) )
 
             if not series_id.isdigit() or int( series_id ) >= len( series ) or int( series_id ) < 0:
                 log.warning( error_handling( "ide", self.lang, { "id": series_id } ) )
@@ -64,7 +64,7 @@ class seriesDownloader:
     def get_episodes(self):
         '''It generates a list (or range) of items to download according to the input'''
         while True:
-            episodes = input( '\n{down}: '.format( down=lang_handling( "download_episodes", self.lang ) ) )
+            episodes = input( '\n{down} ( 1-10 | 1,5,30 | 11 ): '.format( down=lang_handling( "download_episodes", self.lang ) ) )
             episodes = episodes.replace(' ','')
 
             if ',' in episodes:
@@ -246,10 +246,11 @@ class TV2( seriesDownloader ):
             if self.settings['bitrate'] >= int( bitrates[i].rstrip('p') ):
                 break
 
-        videoLinks = dictionary['bitrates']['mp4']
-        del videoLinks[0]
+        self.settings['tmp'] = bitrates[i]
 
-        return videoLinks[i]
+        videoLinks = dictionary['bitrates']['mp4']
+
+        return videoLinks[i + 1]
 
     def download_videos( self ):
         '''Download controller'''
@@ -266,14 +267,13 @@ class TV2( seriesDownloader ):
         self.get_episodes()
 
         for ep in self.settings['episodes']:
-            log.info( '-'*10 + '{ep}. {episode} '.format( ep=ep, episode=lang_handling( 'episode', self.lang ) ) + '-'*10 )
+            log.info( '-'*10 + '{ep}. {episode}'.format( ep=ep, episode=lang_handling( 'episode', self.lang ) ) + '-'*10 )
             ep_links = self.get_episode_links( ep )
             if not ep_links:
                 log.warning( error_handling( "not", self.lang ) )
                 continue
 
             for ep_link, ep_name in ep_links:
-                log.info( '[{ep}]'.format( ep=ep_name ) )
                 jsonUrl = self.get_json_url( ep_link )
                 if not jsonUrl:
                     continue
@@ -284,9 +284,10 @@ class TV2( seriesDownloader ):
                         continue
 
                     link = 'http:{url}'.format( url=self.select_bitrate( jsonDict ) )
+                    log.info( '[{ep} {bit}]'.format( ep=ep_name, bit=self.settings['tmp'] ) )
                     log.debug( link )
                     try:
-                        download( link, ep_name, self.settings['path'] )
+                        download( link, "{ep}_{bit}".format( ep=ep_name, bit=self.settings['tmp'] ), self.settings['path'] )
                         log.debug( lang_handling( 'done', self.lang ) )
                     except:
                         log.error( error_handling( "dow", self.lang ) )
