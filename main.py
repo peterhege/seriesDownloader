@@ -5,6 +5,7 @@ import classes
 import functs
 import sys
 import mylogging as log
+import config as cfg
 
 
 # Create shortcut functions
@@ -13,8 +14,8 @@ lang_handling = functs.lang_handling
 error_handling = functs.error_handling
 
 # Default paths
-DOWNLOAD_PATH = 'tmp'
-LANG_PATH = 'lang/hu.json'
+DOWNLOAD_PATH = cfg.DOWNLOAD_PATH
+LANG_PATH = cfg.LANG_PATH
 
 
 def select_host( lang ):
