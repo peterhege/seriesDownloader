@@ -11,7 +11,6 @@ import mylogging as log
 read_json_file = functs.read_json_file
 lang_handling = functs.lang_handling
 error_handling = functs.error_handling
-encoding_string = functs.encoding_string
 
 # Default paths
 DOWNLOAD_PATH = 'tmp'
@@ -33,7 +32,7 @@ def select_host( lang ):
         host_id = input( '\n{ident}: '.format( ident=lang_handling( "identification", lang ) ) )
 
         if host_id not in hosts:
-            log.warning( encoding_string( lang["errors"]["ide"].format( id=host_id ) ) )
+            log.warning( error_handling( "ide", self.lang, { "id": host_id } ) )
         else:
             break
 
@@ -42,13 +41,23 @@ def select_host( lang ):
 
 def select_bitrate( lang ):
     '''Specify the desired bitrate'''
+
+    bitrates = [
+        1080,
+        720,
+        480,
+        360,
+        240,
+        144
+    ]
+
     while True:
         bitrate = input( '\n{bitrate}: '.format( bitrate=lang_handling( "bitrate", lang ) ) )
 
         if not bitrate.isdigit():
-            log.warning( encoding_string( lang['errors']['num'].format( value=bitrate ) ) )
+            log.warning( "num", self.lang, { "value": bitrate } )
         elif int( bitrate ) < 360:
-            log.warning( encoding_string( lang['errors']['sma'].format( num=bitrate ) ) )
+            log.warning( "sma", self.lang, { "num": bitrate } )
         else:
             return bitrate
 

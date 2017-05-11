@@ -7,7 +7,6 @@ import functs
 
 
 # Create shortcut functions
-encoding_string = functs.encoding_string
 lang_handling = functs.lang_handling
 error_handling = functs.error_handling
 replace_accent = functs.replace_accent
@@ -42,22 +41,22 @@ class seriesDownloader:
             series_id = input('\n{ident}: '.format( ident=lang_handling( "identification", self.lang ) ) )
 
             if not series_id.isdigit() or int( series_id ) >= len( series ) or int( series_id ) < 0:
-                log.warning( encoding_string( self.lang["errors"]["ide"].format( id=series_id ) ) )
+                log.warning( error_handling( "ide", self.lang, { "id": series_id } ) )
             else:
                 break
 
         self.settings['show_id'] = series[ int(series_id) ][1]
         self.settings['show_name'] = series[int(series_id)][0].capitalize()
 
-        log.debug( encoding_string( self.lang["selected_series"].format( series=series[int(series_id)][0] ) ) )
-        log.debug( encoding_string( self.lang["selected_series_id"].format( id=series[int(series_id)][1] ) ) )
+        log.debug( lang_handling( "selected_series", self.lang, { "series": series[int(series_id)][0] } ) )
+        log.debug( lang_handling( "selected_series_id", self.lang, { "id": series[int(series_id)][1] } ) )
 
 
     def valid_episodes( self, episodes ):
         '''Examine the list being delivered.'''
         for value in episodes:
             if not value.isdigit():
-                log.warning( encoding_string( self.lang["errors"]["num"].format( value=value ) ) )
+                log.warning( error_handling( "num", self.lang, { "value": value } ) )
                 return False
         return True
 
@@ -75,7 +74,7 @@ class seriesDownloader:
                 if self.valid_episodes(episodes):
                     episodes = set(episodes)
                     self.settings['episodes'] = sorted( [ int(ep) for ep in episodes ] )
-                    log.debug( encoding_string( self.lang['selected_episodes'].format( episodes=str( self.settings['episodes'] ) ) ) )
+                    log.debug( lang_handling( 'selected_episodes', self.lang, { "episodes": str( self.settings['episodes'] ) } ) )
                     return True
                 else:
                     continue
@@ -85,23 +84,23 @@ class seriesDownloader:
                 episodes = episodes.split('-')
 
                 if len( episodes ) != 2:
-                    log.warning( encoding_string( self.lang["errors"]["int"] ) )
+                    log.warning( error_handling( "int", self.lang ) )
                     continue
                 if self.valid_episodes(episodes):
                     episodes[0] = int( episodes[0] )
                     episodes[1] = int( episodes[1] )
                     self.settings['episodes'] = range( min(episodes), max(episodes) + 1 )
-                    log.debug( encoding_string( self.lang['selected_episodes'].format( episodes=str( self.settings['episodes'] ) ) ) )
+                    log.debug( lang_handling( 'selected_episodes', self.lang, { "episodes": str( self.settings['episodes'] ) } ) )
                     return True
                 else:
                     continue
 
             if episodes.isdigit():
                 self.settings['episodes'] = [ int( episodes ) ]
-                log.debug( encoding_string( self.lang['selected_episodes'].format( episodes=str( self.settings['episodes'] ) ) ) )
+                log.debug( lang_handling( 'selected_episodes', self.lang, { "episodes": str( self.settings['episodes'] ) } ) )
                 return True
             else:
-                log.warning( encoding_string( self.lang["errors"]["num"].format( value=episodes ) ) )
+                log.warning( error_handling( "num", self.lang, { "value": episodes } ) )
 
 
 class TV2( seriesDownloader ):
@@ -147,7 +146,6 @@ class TV2( seriesDownloader ):
 
             if len( keyword ) < 3:
                 log.warning( error_handling( "min", self.lang ) )
-                #log.warning( encoding_string( self.lang["errors"]["min"] ) )
                 continue
             else:
                 break
@@ -157,7 +155,7 @@ class TV2( seriesDownloader ):
                 hit_series.append( ser )
 
         if len( hit_series ) == 0:
-            log.warning( encoding_string( self.lang["errors"]["non"].format( key=keyword ) ) )
+            log.warning( error_handling( "non", self.lang, { "key": keyword } ) )
             return False
 
         return hit_series
@@ -271,7 +269,7 @@ class TV2( seriesDownloader ):
             log.info( '-'*10 + '{ep}. {episode} '.format( ep=ep, episode=lang_handling( 'episode', self.lang ) ) + '-'*10 )
             ep_links = self.get_episode_links( ep )
             if not ep_links:
-                log.warning( encoding_string( self.lang["errors"]["not"] ) )
+                log.warning( error_handling( "not", self.lang ) )
                 continue
 
             for ep_link, ep_name in ep_links:
@@ -291,7 +289,7 @@ class TV2( seriesDownloader ):
                         download( link, ep_name, self.settings['path'] )
                         log.debug( lang_handling( 'done', self.lang ) )
                     except:
-                        log.error( encoding_string( self.lang['errors']['dow'] ) )
+                        log.error( error_handling( "dow", self.lang ) )
 
 
     def __str__( self ):
