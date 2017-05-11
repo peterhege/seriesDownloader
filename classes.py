@@ -14,16 +14,7 @@ replace_accent = functs.replace_accent
 download = functs.download
 
 
-class TV2:
-    def __init__( self, host, lang, settings={ 'bitrate': 720, 'path': 'tmp' } ):
-        self.host_settings = host
-        self.host_settings['date_end'] = date.today().strftime("%Y-%m-%d")
-
-        self.settings = settings
-
-        self.lang = lang
-
-
+class seriesDownloader:
     def get_data( self, link, xpath_desc ):
         '''Finding data from the link with xpath_desc'''
         try:
@@ -37,55 +28,6 @@ class TV2:
 
         tree = html.fromstring( page.content )
         return tree.xpath( xpath_desc )
-
-
-    def get_series(self):
-        '''Returns all series of the host in a sorted list'''
-        series_l = []
-        host = self.host_settings['host']
-        xpath_desc = self.host_settings['series_xpath']
-
-        print( '\n{load}...'.format( load=lang_handling( "load", self.lang ) ), end='' )
-
-        series = self.get_data( '{host}/search.php'.format( host=host ), xpath_desc )
-        if not series:
-            return False
-
-        for value in series:
-            key = value.xpath('text()')[0].lower().strip()
-            val = value.xpath('@value')[0]
-
-            if val != '0': #0 - Műsor (default menu item)
-                series_l.append( ( key, val ) )
-
-        print( '{ready}'.format( ready=lang_handling( "ready", self.lang ) ) )
-
-        return sorted( series_l, key=lambda series_l: replace_accent( series_l[0] ) )
-
-
-    def search_series( self, series ):
-        '''Finds the specified keyword in the series'''
-        hit_series = []
-
-        while True:
-            keyword = input( '\n{search}: '.format( search=lang_handling( "series_search", self.lang ) ) )
-
-            if len( keyword ) < 3:
-                log.warning( error_handling( "min", self.lang ) )
-                #log.warning( encoding_string( self.lang["errors"]["min"] ) )
-                continue
-            else:
-                break
-
-        for ser in series:
-            if keyword.lower() in ser[0]:
-                hit_series.append( ser )
-
-        if len( hit_series ) == 0:
-            log.warning( encoding_string( self.lang["errors"]["non"].format( key=keyword ) ) )
-            return False
-
-        return hit_series
 
 
     def print_series( self, series ):
@@ -109,7 +51,6 @@ class TV2:
 
         log.debug( encoding_string( self.lang["selected_series"].format( series=series[int(series_id)][0] ) ) )
         log.debug( encoding_string( self.lang["selected_series_id"].format( id=series[int(series_id)][1] ) ) )
-
 
 
     def valid_episodes( self, episodes ):
@@ -161,6 +102,65 @@ class TV2:
                 return True
             else:
                 log.warning( encoding_string( self.lang["errors"]["num"].format( value=episodes ) ) )
+
+
+class TV2( seriesDownloader ):
+    def __init__( self, host, lang, settings={ 'bitrate': 720, 'path': 'tmp' } ):
+        self.host_settings = host
+        self.host_settings['date_end'] = date.today().strftime("%Y-%m-%d")
+
+        self.settings = settings
+
+        self.lang = lang
+
+
+    def get_series(self):
+        '''Returns all series of the host in a sorted list'''
+        series_l = []
+        host = self.host_settings['host']
+        xpath_desc = self.host_settings['series_xpath']
+
+        print( '\n{load}...'.format( load=lang_handling( "load", self.lang ) ), end='' )
+
+        series = self.get_data( '{host}/search.php'.format( host=host ), xpath_desc )
+        if not series:
+            return False
+
+        for value in series:
+            key = value.xpath('text()')[0].lower().strip()
+            val = value.xpath('@value')[0]
+
+            if val != '0': #0 - Műsor (default menu item)
+                series_l.append( ( key, val ) )
+
+        print( '{ready}'.format( ready=lang_handling( "ready", self.lang ) ) )
+
+        return sorted( series_l, key=lambda series_l: replace_accent( series_l[0] ) )
+
+
+    def search_series( self, series ):
+        '''Finds the specified keyword in the series'''
+        hit_series = []
+
+        while True:
+            keyword = input( '\n{search}: '.format( search=lang_handling( "series_search", self.lang ) ) )
+
+            if len( keyword ) < 3:
+                log.warning( error_handling( "min", self.lang ) )
+                #log.warning( encoding_string( self.lang["errors"]["min"] ) )
+                continue
+            else:
+                break
+
+        for ser in series:
+            if keyword.lower() in ser[0]:
+                hit_series.append( ser )
+
+        if len( hit_series ) == 0:
+            log.warning( encoding_string( self.lang["errors"]["non"].format( key=keyword ) ) )
+            return False
+
+        return hit_series
 
 
     def get_episode_links( self, ep ):
