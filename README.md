@@ -2,90 +2,49 @@
 
 ---
 
-A program lényege, hogy különböző oldalakról sorozatokat töltsünk le. Jelenleg:
+The essence of the program is to download series from different pages. Actually:
 - tv2.hu
 - supertv2.hu
 
-# Használat
+# Usage
 
-Futtasuk a **main**.py fájlt, majd a program kiírásainak megfelelően adjuk meg a kért adatokat.
-- felbontás: csak szám (pl.: 720)
-- host azonosító
-- kívánt sorozat neve ( vagy egy része )
-- találati listából választás
-- letöltendő epizódok ( lista, range vagy csak egy )
+Run the main.py file, and then enter the requested information according to the program prompts.
 
-A letöltés elindul
+### Select bitrate
+From the list that appears, select the desired bitrate and type it.
+Example: 360
 
-# Felépítés
+If the specified resolution does not exist for the selected episode, the program will select the next one with a lower resolution.
+If you want to download the best quality, select the highest resolution from the list.
 
-### **main**.py
 
-Betölti a nyelvi fájlt. Gondoskodik a felbontás és a host megadásáról, majd a host alapján példányosítja a megfelelő osztályt és futtatja az objektum "download_videos" metódusát, mely vezérli a letöltési folyamatot.
+### Select host
+From the list that appears, select the host you want and type the host ID.
 
-### **classes**.py
+       0       http://tv2.hu
+       1       http://supertv2.hu
+For example, you want to http://tv2.hu then: 0
 
-A különböző osztályok itt vannak deklarálva.
-Minden osztálynak három adatszótára kell hogy legyen:
+### Search series
+Enter a keyword (at least 3 characters) of the name of the series to be searched.
+For example, I'd like to find a series called "Jóban Rosszban": jób
 
-###### host_settings
-host.json leírásánál részletesebben
+Based on the keyword, the program will list the results and enter the desired series ID.
 
-###### settings
-Innen töltjük be a felhasználó által megadott paramétereket
+       0       Jóban rosszban
+Currently there is an option, just what I was looking for: 0
 
-###### lang
-Nyelvi adatok
+If no series is found, indicate the program, try another server.
 
-Kötelező (más osztályoknál használható) metódusok:
+### Enter episodes to download
 
-##### Adatbányászat
-```python
-def data_mining( self, link, xpath_desc ):
-```
-Kinyeri a megadott link-ről az xpath_desc-nek megfelelő adatokat és visszatér egy listával.
+There are three ways to specify the series to download:
+- Just give an episode
+Example: 2448
+- Enter interval with hyphen
+Example: 5-31
+- Enter multiple sections comma separated
+Example: 5, 12, 54
 
-##### A megtalált sorozatok listázása
-```python
-def print_series( self, series ):
-```
-Sorozatok egy listáját várja, melyben tuple típusok vannak:
-```python
-( "sorozat_neve", "sorozat_azonosítója" )
-```
-Ezek közül választhat a felhasználó
-
-##### Megadott epizódok ellenőrzése
-```python
-def valid_episodes( self, episodes ):
-```
-Egy list típust vár, amiben csak számok lehetnek, ezt ellenőrzi.
-
-##### Epizódok beolvasása
-```python
-def get_episodes(self):
-```
-
-Az epízódokat háromféleképpen lehet megadni:
-- lista ( pl.: 1,5,3 )
-- range ( pl.: 1-5 )
-- csak egy ( pl.: 1 )
-
-Ezt elmenti a "settings" adatszótár "episodes" indexéhez, majd ezen fogunk végigiterálni. Egy elem esetén egy egy elemű listát ment el.
-
-A további metódusokat az adott host alapján kell megírni.
-
-### **functs**.py
-
-Letöltéshez szükséges függvények.
-- json fájl beolvasása
-- Ékezetes karakterek dekódolása
-- Nyelvi adatok visszaadása
-- Ékezetes karakterek cseréje (mentéshez)
-- Letöltő
-
-### **mylogging**.py
-Logolásért felelős fájl.
-
-### **hosts**.json
-A különböző hostok egyedi beállításai, főként a megfelelő xpath leírások az adatok kinyeréséhez.
+### Download starts
+More detailed errors and information can be viewed in the log/info.log file
