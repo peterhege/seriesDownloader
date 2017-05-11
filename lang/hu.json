@@ -8,6 +8,7 @@
 	"select_bitrate": "Kérem, adjon meg egy kívánt felbontást a listáról",
 	"select_host": "Kérem, adja meg a kívánt kiszolgáló azonosítóját",
 	"select_series": "Kérem, adjon meg egy azonosítót a találati listáról",
+	"select_option": "Kérem, adja meg hogy mit kíván tenni (azonosító)",
 	"selected_series": "Válaszott sorozat: '{series}'",
 	"selected_series_id": "Válaszott sorozat azonosító: '{id}'",
 	"selected_host": "Választott kiszolgáló: '{host}'",
@@ -17,6 +18,8 @@
 	"episode": "epizód",
 	"bitrate": "Felbontás",
 	"done": "Kész",
+	"option": "Lehetőség",
+	"download_done": "A letöltés befejeződött",
 	"errors": {
 		"con": "Nincs internetkapcsolat vagy a '{link}' nem érhetö el",
 		"url": "Helytelen URL: '{link}'",
@@ -30,5 +33,11 @@
 		"sma": "Túl kicsi számot adott meg: '{num}'",
 		"dow": "A letöltés nem sikerült",
 		"bie": "Érvénytelen felbontást adott meg: '{bitrate}'"
-	}
+	},
+	"options": [
+		"Teljes keresés indítása",
+		"Új sorozat keresése ezen a kiszolgálón",
+		"Új epizódok keresése a megadott beállításokkal"
+	],
+	"exit": "Kilépés"
 }

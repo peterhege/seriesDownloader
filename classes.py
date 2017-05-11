@@ -252,22 +252,27 @@ class TV2( seriesDownloader ):
 
         return videoLinks[i + 1]
 
-    def download_videos( self ):
+    def download_videos( self, start ):
         '''Download controller'''
-        series = self.get_series()
-        if not series:
-            return False
+        if start >= 0 and start < 2:
+            series = self.get_series()
+            if not series:
+                return False
 
-        while True:
-            series_hit = self.search_series( series )
-            if series_hit:
-                break
+            while True:
+                series_hit = self.search_series( series )
+                if series_hit:
+                    break
 
-        self.print_series( series_hit )
+            self.print_series( series_hit )
+
         self.get_episodes()
 
+        total = len( self.settings['episodes'] )
+        process = 0
+
         for ep in self.settings['episodes']:
-            log.info( '-'*10 + '{ep}. {episode}'.format( ep=ep, episode=lang_handling( 'episode', self.lang ) ) + '-'*10 )
+            log.info( '\n[{progress:3.0f}%] {ep}. {episode}'.format( progress=(100 * process / total), ep=ep, episode=lang_handling( 'episode', self.lang ) ) )
             ep_links = self.get_episode_links( ep )
             if not ep_links:
                 log.warning( error_handling( "not", self.lang ) )
@@ -291,6 +296,10 @@ class TV2( seriesDownloader ):
                         log.debug( lang_handling( 'done', self.lang ) )
                     except:
                         log.error( error_handling( "dow", self.lang ) )
+
+            process += 1
+
+        log.info( "\n[100%] {done}".format( done=lang_handling( "download_done", self.lang ) ) )
 
 
     def __str__( self ):

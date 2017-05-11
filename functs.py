@@ -93,5 +93,5 @@ def download( link, name, path ):
                 dl += len( data )
                 f.write(data)
                 done = int( progress_length * dl / total_length )
-                print( "\r[{0}{1}] [{2:05.1f}%]".format( '=' * done, ' ' * ( progress_length - done ), 100 * dl / total_length ), end='' )
+                print( "\r[{1}{2}] [{2:5.1f}%]".format( '=' * done, ' ' * ( progress_length - done ), 100 * dl / total_length ), end='' )
             print("")
