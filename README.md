@@ -50,4 +50,4 @@ Example: 5, 12, 54
 More detailed errors and information can be viewed in the log/info.log file
 
 ### Example
-[![asciicast](https://asciinema.org/a/2lt45as46y0nd26qxo4z9cdg6.png)](https://asciinema.org/a/2lt45as46y0nd26qxo4z9cdg6){:target="_blank"}
+[![asciicast](https://asciinema.org/a/2lt45as46y0nd26qxo4z9cdg6.png)](https://asciinema.org/a/2lt45as46y0nd26qxo4z9cdg6)
