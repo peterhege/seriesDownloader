@@ -50,4 +50,4 @@ Például: 5, 12, 54
 Részletesebb hibák és információk megtekinthetőek a log/info.log fájlban
 
 ### Példa
-[![asciicast](https://asciinema.org/a/ejxxi181ge4lmyzdfxn9vthk2.png)](https://asciinema.org/a/ejxxi181ge4lmyzdfxn9vthk2)
+[![asciicast](https://asciinema.org/a/ejxxi181ge4lmyzdfxn9vthk2.png)](https://asciinema.org/a/ejxxi181ge4lmyzdfxn9vthk2){:target="_blank"}
