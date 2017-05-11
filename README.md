@@ -48,3 +48,6 @@ Example: 5, 12, 54
 
 ### Download starts
 More detailed errors and information can be viewed in the log/info.log file
+
+### Example
+https://asciinema.org/a/ejxxi181ge4lmyzdfxn9vthk2

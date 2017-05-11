@@ -48,3 +48,6 @@ Például: 5, 12, 54
 
 ### A letöltés elindul
 Részletesebb hibák és információk megtekinthetőek a log/info.log fájlban
+
+### Példa
+https://asciinema.org/a/ejxxi181ge4lmyzdfxn9vthk2
