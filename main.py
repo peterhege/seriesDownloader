@@ -23,7 +23,7 @@ def select_host( lang ):
     '''Lists the optional hosts.
 
     Returns to the selected host data from the hosts.json file.'''
-    hosts = read_json_file( 'hosts.json' )
+    hosts = read_json_file( 'lib/hosts.json' )
 
     while True:
         print( '\n{id:^15}{name}'.format( id=lang_handling( "identification", lang ), name=lang_handling( "host", lang ) ) )
