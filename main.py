@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 #coding: utf-8
 
-import classes
-import functs
 import sys
-import mylogging as log
-import config as cfg
+from lib import classes
+from lib import functs
+from lib import mylogging as log
+from lib import config as cfg
 
 
 # Create shortcut functions

@@ -1,5 +1,5 @@
 import json
-import mylogging as log
+from lib import mylogging as log
 import sys
 import requests
 

@@ -2,8 +2,8 @@ import requests
 import json
 from datetime import date
 from lxml import html
-import mylogging as log
-import functs
+from lib import mylogging as log
+from lib import functs
 
 
 # Create shortcut functions
