@@ -2,13 +2,13 @@
 
 ---
 
-The essence of the program is to download series from different pages. Actually:
+The purpose of the program is to download series from the following sites:
 - tv2.hu
 - supertv2.hu
 
 # Usage
 
-Run the main.py file, and then enter the requested information according to the program prompts.
+Run the main.py file then enter the requested information according to the program prompts.
 
 ### Select bitrate
 From the list that appears, select the desired bitrate and type it.
@@ -19,22 +19,22 @@ If you want to download the best quality, select the highest resolution from the
 
 
 ### Select host
-From the list that appears, select the host you want and type the host ID.
+From the list that appears, select the host you would like to download the episode(s) from. (by typing in the host's ID)
 
        0       http://tv2.hu
        1       http://supertv2.hu
-For example, you want to http://tv2.hu then: 0
+For example, if you choose http://tv2.hu then: 0
 
 ### Search series
-Enter a keyword (at least 3 characters) of the name of the series to be searched.
-For example, I'd like to find a series called "Jóban Rosszban": jób
+Enter a keyword (at least 3 characters) of the name of the series you're looking for.
+For example, if you'd like to find a series called "Jóban Rosszban", type: jób
 
-Based on the keyword, the program will list the results and enter the desired series ID.
+Based on the keyword, the program will list the results with the series' ID and name.
 
        0       Jóban rosszban
-Currently there is an option, just what I was looking for: 0
+In this example there is only one result, just what I was looking for: 0
 
-If no series is found, indicate the program, try another server.
+No matching result will be indicated by the program, you should try another host.
 
 ### Enter episodes to download
 
@@ -43,7 +43,7 @@ There are three ways to specify the series to download:
 Example: 2448
 - Enter interval with hyphen
 Example: 5-31
-- Enter multiple sections comma separated
+- Enter multiple episode numbers comma separated
 Example: 5, 12, 54
 
 ### Download starts
