@@ -19,7 +19,7 @@ If you want to download the best quality, select the highest resolution from the
 
 
 ### Select host
-From the list that appears, select the host you would like to download the episode(s). (by typing in the host's ID)
+From the list that appears, select the host you would like to download the episode(s) from. (by typing in the host's ID)
 
        0       http://tv2.hu
        1       http://supertv2.hu
